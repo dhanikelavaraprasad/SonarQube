@@ -1,0 +1,4387 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]> <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]--><head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+  <link href="/images/favicon.ico?1433759306" type="image/x-icon" rel="shortcut icon" />
+  
+  <title>SonarQube</title>
+
+  <link media="all" rel="stylesheet" href="/css/sonar.css?v=5.1.1" />
+  
+  <script>
+    var pageLang = 'en_US';
+    
+    window.SS = typeof window.SS === 'object' ? window.SS : {};
+    window.SS.hoursInDay = 8;
+    window.SS.user = '';
+    window.SS.userName = '';
+  </script>
+  <script src="/js/sonar.js?v=5.1.1"></script>
+  <script>
+    var baseUrl = '';
+    var $j = jQuery.noConflict();
+    $j(document).ready(function () {$j('.open-modal').modal()});
+    moment.lang(window.pageLang);
+    numeral.language(window.pageLang);
+  </script>
+  <script src="/js/require.js?v=5.1.1"></script>
+  <script>
+    requirejs.config({
+      baseUrl: baseUrl + '/js',
+      urlArgs: 'v=5.1.1'
+    });
+  </script>
+  
+  <script>require(['issues/app-new']);</script>
+<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="issues/app-new" src="/js/issues/app-new.js?v=5.1.1"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="nav/app" src="/js/nav/app.js?v=5.1.1"></script></head>
+<body class="">
+
+
+  
+<div id="container" class="page-wrapper page-wrapper-global">
+  <nav id="global-navigation" class="navbar navbar-global page-container navbar-fade in"><div class="container">
+  <div class="navbar-header">
+    <a href="/" class="navbar-brand ">
+        <img title="Embrace Quality" alt="Embrace Quality" src="/images/logo.svg" />
+    </a>
+  </div>
+
+  <ul class="nav navbar-nav">
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+        Dashboards <span class="icon-dropdown"></span>
+      </a>
+      <ul class="dropdown-menu">
+          <li>
+            <a href="/dashboard/?did=4">Home</a>
+          </li>
+      </ul>
+    </li>
+    <li class="active">
+      <a href="/issues/search">Issues</a>
+    </li>
+    <li>
+      <a href="/measures/search?qualifiers[]=TRK">Measures</a>
+    </li>
+    <li>
+      <a href="/coding_rules">Rules</a>
+    </li>
+    <li>
+      <a href="/profiles">Quality Profiles</a>
+    </li>
+    <li>
+      <a href="/quality_gates">Quality Gates</a>
+    </li>
+    <li class="dropdown">
+      <a href="#" data-toggle="dropdown" class="dropdown-toggle">More <i class="icon-dropdown"></i></a>
+      <ul class="dropdown-menu">
+        <li>
+          <a href="/comparison">Compare Projects</a>
+        </li>
+        <li>
+          <a href="/dependencies">Dependencies</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a href="/sessions/new" class="js-login">Log in</a>
+      </li>
+    <li class="dropdown js-search-dropdown">
+      <a href="#" data-toggle="dropdown" class="dropdown-toggle navbar-search-dropdown js-search-dropdown-toggle">
+        <i class="icon-search navbar-icon"></i> <span class="icon-dropdown"></span>
+      </a>
+
+      <div class="js-search-region dropdown-menu dropdown-menu-right"></div>
+    </li>
+    <li>
+      <a href="#" class="js-shortcuts">
+        <i class="icon-help navbar-icon"></i>
+      </a>
+    </li>
+  </ul>
+
+</div>
+</nav>
+
+  
+
+  
+  <div class="page-container" id="body">
+    <div id="content">
+      <div style="display:none" id="error" class="error">
+        <span id="errormsg"></span>   [<a onclick="javascript:$j('#error').hide();return false;" href="#">hide</a>]
+      </div>
+      <div style="display:none" id="info" class="notice">
+        <span id="infomsg"></span>   [<a onclick="javascript:$j('#info').hide();return false;" href="#">hide</a>]
+      </div>
+      <div style="display:none" id="warning" class="warning">
+        <span id="warningmsg"></span>   [<a onclick="javascript:$j('#warning').hide();return false;" href="#">hide</a>]
+      </div>
+      
+
+<div class="issues search-navigator sticky"><div><div class="search-navigator-side" style="top: 30px;">
+  <div class="search-navigator-filters"><div><div class="search-navigator-filters-list">
+  <a href="/issues/manage" class="search-navigator-filters-manage"><i class="icon-settings"></i> Manage</a>
+</div>
+
+<h1 class="page-title">
+    <span class="search-navigator-filters-name">Issues</span>
+</h1>
+
+<div class="page-actions">
+  <div class="button-group">
+  </div>
+</div>
+</div></div>
+  <div class="search-navigator-facets"><div class="search-navigator-facets-list"><div class="search-navigator-facet-box hidden"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Issue Key
+</a>
+
+<div class="search-navigator-facet-container">
+  <div style="cursor: default;" class="facet search-navigator-facet active">
+    <span class="facet-name"></span>
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="severities"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Severity
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="resolutions"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Resolution
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="statuses"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Status
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  New Issues
+</a>
+
+  <div class="search-navigator-facet-container">
+    <div data-height="75" class="js-barchart"><svg xmlns="http://www.w3.org/2000/svg" width="2" height="77" class="sonar-d3"><g class="plot" transform="translate(1, 18)"/></svg></div>
+    <div class="search-navigator-date-facet-selection">
+      <a class="js-select-period-start search-navigator-date-facet-selection-dropdown-left">
+        Past <i class="icon-dropdown"></i>
+      </a>
+      <a class="js-select-period-end search-navigator-date-facet-selection-dropdown-right">
+        Now <i class="icon-dropdown"></i>
+      </a>
+      <input type="text" name="createdAfter" value="" class="js-period-start search-navigator-date-facet-selection-input-left hasDatepicker" id="dp1442990289043" />
+      <input type="text" name="createdBefore" value="" class="js-period-end search-navigator-date-facet-selection-input-right hasDatepicker" id="dp1442990289044" />
+    </div>
+
+    <div class="spacer-top">
+      <span class="spacer-right">Or:</span>
+      <a class="js-all spacer-right">All</a>
+      <a class="js-last-week spacer-right">Last week</a>
+      <a class="js-last-month spacer-right">Last month</a>
+      <a class="js-last-year">Last year</a>
+    </div>
+  </div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="rules"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Rule
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value" id="s2id_autogen235" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input type="text" class="select2-input" autocomplete="off" />   </div>   <ul class="select2-results">   </ul></div></div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="tags"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Tag
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value" id="s2id_autogen236" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input type="text" class="select2-input" autocomplete="off" />   </div>   <ul class="select2-results">   </ul></div></div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="projectUuids"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Project
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value" id="s2id_autogen237" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input type="text" class="select2-input" autocomplete="off" />   </div>   <ul class="select2-results">   </ul></div></div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="moduleUuids"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Module
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="directories"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Directory
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="fileUuids"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  File
+</a>
+
+<div class="search-navigator-facet-list search-navigator-facet-list-align-right">
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="assignees"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Assignee
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value" id="s2id_autogen238" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input type="text" class="select2-input" autocomplete="off" />   </div>   <ul class="select2-results">   </ul></div></div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="reporters"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Reporter
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value" id="s2id_autogen239" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input type="text" class="select2-input" autocomplete="off" />   </div>   <ul class="select2-results">   </ul></div></div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box" data-property="authors"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox icon-checkbox-checked"></i>
+  Author
+</a>
+
+<div class="search-navigator-facet-list">
+    <a title="nick.randall@domo.com" data-value="nick.randall@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">nick.randall@domo.com</span>
+      <span class="facet-stat">3785</span>
+    </a>
+    <a title="tyler.russell@domo.com" data-value="tyler.russell@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">tyler.russell@domo.com</span>
+      <span class="facet-stat">3287</span>
+    </a>
+    <a title="walter.weidner@domo.com" data-value="walter.weidner@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">walter.weidner@domo.com</span>
+      <span class="facet-stat">2774</span>
+    </a>
+    <a title="frost@domo.com" data-value="frost@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">frost@domo.com</span>
+      <span class="facet-stat">2092</span>
+    </a>
+    <a title="tim.ehat@domo.com" data-value="tim.ehat@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">tim.ehat@domo.com</span>
+      <span class="facet-stat">1567</span>
+    </a>
+    <a title="paul.navasard@domo.com" data-value="paul.navasard@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">paul.navasard@domo.com</span>
+      <span class="facet-stat">1237</span>
+    </a>
+    <a title="rachel.wootton@domo.com" data-value="rachel.wootton@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">rachel.wootton@domo.com</span>
+      <span class="facet-stat">1213</span>
+    </a>
+    <a title="justin.martin@corda.com" data-value="justin.martin@corda.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">justin.martin@corda.com</span>
+      <span class="facet-stat">1148</span>
+    </a>
+    <a title="jinxidoru@gmail.com" data-value="jinxidoru@gmail.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">jinxidoru@gmail.com</span>
+      <span class="facet-stat">1063</span>
+    </a>
+    <a title="jake.lingwall@domo.com" data-value="jake.lingwall@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">jake.lingwall@domo.com</span>
+      <span class="facet-stat">1049</span>
+    </a>
+    <a title="trevor.tingey@domo.com" data-value="trevor.tingey@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">trevor.tingey@domo.com</span>
+      <span class="facet-stat">1047</span>
+    </a>
+    <a title="matt.tescher@domo.com" data-value="matt.tescher@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">matt.tescher@domo.com</span>
+      <span class="facet-stat">870</span>
+    </a>
+    <a title="viper@domo.com" data-value="viper@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">viper@domo.com</span>
+      <span class="facet-stat">718</span>
+    </a>
+    <a title="shang.wang@domo.com" data-value="shang.wang@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">shang.wang@domo.com</span>
+      <span class="facet-stat">592</span>
+    </a>
+    <a title="ricky.roller@domo.com" data-value="ricky.roller@domo.com" class="facet search-navigator-facet js-facet">
+      <span class="facet-name">ricky.roller@domo.com</span>
+      <span class="facet-stat">585</span>
+    </a>
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value select2-container-active" id="s2id_autogen243" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#" tabindex="-1">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a><div class="select2-drop select2-drop-active select2-offscreen" style="display: block;">   <div class="select2-search">       <input type="text" class="select2-input select2-focused" autocomplete="off" tabindex="-1" />   </div>   <ul class="select2-results"></ul></div>    </div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="languages"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Language
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div class="select2-container js-custom-value" id="s2id_autogen241" style="width: 100%">    <a class="select2-choice select2-default" onclick="return false;" href="#">   <span>Search...</span><abbr style="display:none;" class="select2-search-choice-close"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input type="text" class="select2-input" autocomplete="off" />   </div>   <ul class="select2-results">   </ul></div></div><input type="hidden" class="js-custom-value" style="display: none;" />
+  </div>
+</div>
+</div><div class="search-navigator-facet-box search-navigator-facet-box-collapsed" data-property="actionPlans"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Action Plan
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div></div></div>
+</div>
+
+<div class="search-navigator-workspace">
+  <div class="search-navigator-workspace-header" style="top: 30px;"><div><div class="issues-header-component nowrap">
+     
+</div>
+
+
+<div class="search-navigator-header-actions">
+    <div class="search-navigator-header-pagination">
+        <a title="Previous" class="js-prev icon-prev"></a>
+        <span class="current">1 / <span id="issues-total">43889</span></span>
+        <a title="Next" class="js-next icon-next"></a>
+    </div>
+
+
+  <div class="search-navigator-header-buttons button-group">
+    <button class="js-reload" id="issues-reload">Reload</button>
+    <button id="issues-new-search" class="js-new-search">New Search</button>
+  </div>
+</div>
+</div></div>
+  <div class="search-navigator-workspace-list"><div><div class="js-list">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="issues-workspace-list-component">
+  <a href="/dashboard/index?id=DOMOWeb" class="issues-workspace-list-component-part">
+    <i class="icon-qualifier-trk"></i> DOMOWeb
+  </a>
+  <a href="/dashboard/index?id=DOMOWeb%3ADomoWeb%2Fpublic%2Fjavascripts%2FApplicationBootstrap.js" class="issues-workspace-list-component-part">
+    <i class="icon-qualifier-fil"></i> DomoWeb/public/javascripts/ApplicationBootstrap.js
+  </a>
+</div>
+<div class="issue selected issue-navigate-right" data-key="31b92bf8-cdbf-4f30-9525-ff07358d0327"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">20 more comment lines need to be written to reach the minimum threshold of 25.0% comment density. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=31b92bf8-cdbf-4f30-9525-ff07358d0327" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                40min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="939c37e9-ac95-42e8-a461-f0b50a2af511"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L1</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=939c37e9-ac95-42e8-a461-f0b50a2af511" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="2b176d76-ff36-42ae-aa79-8cd2dc5fa7fe"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Use of JavaScript strict mode may result in unexpected behaviour in some browsers. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L1</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=2b176d76-ff36-42ae-aa79-8cd2dc5fa7fe" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-info"></i> Info
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cross-browser, user-experience</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="af8130f3-48d0-4e16-9fbf-a369c9bd4802"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">"CurrentUser" hides or potentially hides a variable declared in an outer scope at line 5. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L27</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=af8130f3-48d0-4e16-9fbf-a369c9bd4802" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                10min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="57641fda-6f2d-4779-b958-ffbc6ec6d251"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">The line contains 136 characters which is greater than 80 authorized. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L27</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=57641fda-6f2d-4779-b958-ffbc6ec6d251" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="d854eb78-ba71-4af5-81ae-8889701bfe01"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Either remove or fill this block of code. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L41</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=d854eb78-ba71-4af5-81ae-8889701bfe01" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>bug</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="44089ec3-ff82-4c33-9e07-8db58f1dec76"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Complete the task associated to this TODO comment. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L93</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=44089ec3-ff82-4c33-9e07-8db58f1dec76" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-info"></i> Info
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                20min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>No tags</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="73a7c34b-b43d-45c5-bce7-57ee86d62fe5"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L95</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=73a7c34b-b43d-45c5-bce7-57ee86d62fe5" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="5c280072-07c4-4350-8f33-8f8aff2a9adc"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_initializeAndStartBackboneHistory' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L97</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=5c280072-07c4-4350-8f33-8f8aff2a9adc" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="a02aff89-8ca5-432b-8330-02b06c76ef4d"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">The line contains 83 characters which is greater than 80 authorized. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L101</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=a02aff89-8ca5-432b-8330-02b06c76ef4d" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="21ecac87-c1da-4d5d-8c95-fc6f4fdd2c53"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_loadModernScripts' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L104</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=21ecac87-c1da-4d5d-8c95-fc6f4fdd2c53" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="621a502a-801b-46b2-8746-7122de5818f5"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Remove the unused function parameter "d3". <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L105</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=621a502a-801b-46b2-8746-7122de5818f5" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>misra, unused</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="4736bb46-34f8-40f1-9ee7-9cd8aacb388a"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_fixTablesorter' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L108</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=4736bb46-34f8-40f1-9ee7-9cd8aacb388a" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="39afc11d-4935-4e83-97d0-ae5342621ed4"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L111</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=39afc11d-4935-4e83-97d0-ae5342621ed4" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="126cebb3-85f6-4efe-986e-4b39a29851da"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L111</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=126cebb3-85f6-4efe-986e-4b39a29851da" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="0ecf7f28-05a8-4e3a-b5b8-fe7bceec76e5"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_updateBodyClass' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L126</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=0ecf7f28-05a8-4e3a-b5b8-fe7bceec76e5" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="77944208-7105-4ff8-af8d-55ada4ea787b"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L129</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=77944208-7105-4ff8-af8d-55ada4ea787b" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="d41741ad-8678-4b59-a36c-62d7bb0aa4de"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L129</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=d41741ad-8678-4b59-a36c-62d7bb0aa4de" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="a8b82a4f-609b-4473-861c-32a533e2efc7"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L130</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=a8b82a4f-609b-4473-861c-32a533e2efc7" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="3d4cd525-1789-4dd9-a921-66616991270e"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L130</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=3d4cd525-1789-4dd9-a921-66616991270e" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="fabe394e-d810-4ff8-a248-9bf03497724c"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L131</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=fabe394e-d810-4ff8-a248-9bf03497724c" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="e9c75866-630e-4cbd-a835-b4918fdb6b26"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L131</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=e9c75866-630e-4cbd-a835-b4918fdb6b26" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="fb6df479-b5d0-4cae-8cda-f0fc79248bdf"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L132</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=fb6df479-b5d0-4cae-8cda-f0fc79248bdf" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="99ccb4bc-afb1-42cf-a64c-580209aff4d6"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L132</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=99ccb4bc-afb1-42cf-a64c-580209aff4d6" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="0f356833-8741-4d6b-bc44-cd938cbe2d7c"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L133</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=0f356833-8741-4d6b-bc44-cd938cbe2d7c" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="bbe86dc0-89d7-476c-8661-23b3d017cd46"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L133</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=bbe86dc0-89d7-476c-8661-23b3d017cd46" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="9d0b9494-e38c-4cd7-b6f6-f0e0d93a028c"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L134</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=9d0b9494-e38c-4cd7-b6f6-f0e0d93a028c" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="ba62417e-7a94-4312-a2b8-aa55ef635a8b"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L134</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=ba62417e-7a94-4312-a2b8-aa55ef635a8b" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="a6f0a331-8855-4c84-bf5e-703e832f80b4"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_loadRequestParams' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L139</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=a6f0a331-8855-4c84-bf5e-703e832f80b4" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="f4023076-2092-4709-b0ba-e43b5afffbe2"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L141</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=f4023076-2092-4709-b0ba-e43b5afffbe2" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="0d3926a8-5668-4393-96ba-79cb67f65dc7"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L141</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=0d3926a8-5668-4393-96ba-79cb67f65dc7" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="f13bad30-38c6-43b0-b8ef-6c9d35750ef2"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L141</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=f13bad30-38c6-43b0-b8ef-6c9d35750ef2" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="38b371f4-5b65-45c7-84e0-7c0a8433cf1d"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L144</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=38b371f4-5b65-45c7-84e0-7c0a8433cf1d" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="213223c7-e24e-462c-a66b-123470d021c4"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L145</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=213223c7-e24e-462c-a66b-123470d021c4" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="d75750fd-c953-4117-a8c0-28fe2a2897be"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L145</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=d75750fd-c953-4117-a8c0-28fe2a2897be" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="ea7cc0dd-672f-4b28-9ba9-944185459d3f"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L146</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=ea7cc0dd-672f-4b28-9ba9-944185459d3f" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="cc11986f-a954-4e65-b279-1bac071b38e4"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L149</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=cc11986f-a954-4e65-b279-1bac071b38e4" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="03e75d14-9aec-4e2b-9213-2545be3312e7"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_loadDataproviderIcons' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L153</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=03e75d14-9aec-4e2b-9213-2545be3312e7" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="e9a361b3-8fff-4e23-b618-2fb1d2184245"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Rename this '_showAvatarReminder' function to match the regular expression ^[a-z][a-zA-Z0-9]*$ <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L153</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=e9a361b3-8fff-4e23-b618-2fb1d2184245" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                5min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="e61c55bc-c122-481e-a5db-f8a3c3a7079b"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L154</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=e61c55bc-c122-481e-a5db-f8a3c3a7079b" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="2ba99616-b6c6-464c-946e-a512055bc1b4"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L154</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=2ba99616-b6c6-464c-946e-a512055bc1b4" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="68b80f80-0405-4a0c-919a-1be122d87eaa"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L154</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=68b80f80-0405-4a0c-919a-1be122d87eaa" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="33d9b524-f10a-463e-896e-d56506488fe5"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Missing curly brace. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 7 2015 5:55 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L155</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=33d9b524-f10a-463e-896e-d56506488fe5" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-major"></i> Major
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                2min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>cert, cwe, misra, pitfall</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="cc04dfcc-0a2c-40e8-8717-0bde6706c9eb"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">At most one statement is allowed per line, but 2 statements were found on this line. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="June 25 2015 5:23 PM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L155</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=cc04dfcc-0a2c-40e8-8717-0bde6706c9eb" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="dfa22078-7bc3-411b-aa96-d82b9c83e435"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">The line contains 100 characters which is greater than 80 authorized. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L155</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=dfa22078-7bc3-411b-aa96-d82b9c83e435" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="4c9955f7-be32-484f-8081-162c3c3640b0"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L158</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=4c9955f7-be32-484f-8081-162c3c3640b0" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="d2ef5a78-ef5a-4041-a9de-e2d7f4a904ed"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L159</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=d2ef5a78-ef5a-4041-a9de-e2d7f4a904ed" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="cd4da1c5-2938-4c93-a14c-bf8d420d7aa5"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L160</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=cd4da1c5-2938-4c93-a14c-bf8d420d7aa5" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-closed"></i> Closed (Fixed)
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="ccb61819-ce8d-49e5-a253-5bb25297b733"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">The line contains 105 characters which is greater than 80 authorized. <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L161</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=ccb61819-ce8d-49e5-a253-5bb25297b733" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div><div class="issue issue-navigate-right" data-key="b76a5748-3c82-4aef-890c-7ed5de16569c"><div class="issue-inner">
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-message">Replace double quotes by simple quote <a class="js-issue-rule issue-rule icon-ellipsis-h"></a></div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+            <a title="July 10 2015 10:51 AM" class="issue-action issue-action-with-options js-issue-show-changelog">
+              <span class="issue-meta-label">3 months ago</span> <i class="icon-dropdown"></i>
+            </a>
+          </div>
+
+            <div class="issue-meta">
+              <span title="Line Number" class="issue-meta-label">L177</span>
+            </div>
+
+          <div class="issue-meta">
+            <a target="_blank" href="/issues/search#issues=b76a5748-3c82-4aef-890c-7ed5de16569c" class="issue-action js-issue-permalink icon-link"></a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+  <table class="issue-table">
+    <tbody><tr>
+      <td>
+        <div class="issue-meta-list">
+          <div class="issue-meta">
+              <i class="icon-severity-minor"></i> Minor
+          </div>
+
+          <div class="issue-meta">
+              <i class="icon-status-open"></i> Open
+          </div>
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not assigned</span>
+          </div>
+
+
+          <div class="issue-meta">
+              <span class="issue-meta-label">Not planned</span>
+          </div>
+
+            <div class="issue-meta">
+              <span class="issue-meta-label">
+                1min debt
+              </span>
+            </div>
+
+
+        </div>
+      </td>
+
+      <td class="issue-table-meta-cell">
+        <div class="issue-meta js-issue-tags">
+            <span>
+              <i class="icon-tags icon-half-transparent"></i> <span>convention</span>
+            </span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</div>
+
+<a class="issue-navigate js-issue-navigate">
+  <i class="issue-navigate-to-left icon-chevron-left"></i>
+  <i class="issue-navigate-to-right icon-chevron-right"></i>
+</a>
+</div></div>
+
+<div class="search-navigator-workspace-list-more js-more" style="display: block;">
+  <i class="spinner"></i>
+</div>
+</div></div>
+  <div class="issues-workspace-component-viewer"></div>
+</div>
+</div></div>
+
+    </div>
+  </div>
+</div>
+
+
+  
+  <div class="page-footer page-container search-navigator-footer" id="footer">
+    
+    <div>SonarQube™ technology is powered by <a target="SonarSource SA" href="http://www.sonarsource.com">SonarSource SA</a></div>
+    <div>
+      Version 5.1.1 -
+      <a target="lgpl_v3" href="http://www.gnu.org/licenses/lgpl-3.0.txt">LGPL v3</a> -
+      <a target="sonar" href="http://www.sonarqube.org">Community</a> -
+      <a target="sonar_doc" href="http://www.sonarqube.org/documentation">Documentation</a> -
+      <a target="support" href="http://www.sonarqube.org/support">Get Support</a> -
+      <a target="plugins" href="http://redirect.sonarsource.com/doc/plugin-library.html">Plugins</a> -
+      <a href="/api_documentation">Web Service API</a>
+      
+    </div>
+    <!--[if lte IE 8 ]><br/><span class="ie-warn">IE 8 is not supported. Some widgets may not be properly displayed. Please switch to a <a target="_blank" href="http://redirect.sonarsource.com/doc/requirements.html">supported version or another supported browser</a>.</span><!--<![endif]-->
+  </div>
+
+
+
+<script>
+  window.navbarOptions = new Backbone.Model();
+
+  window.navbarOptions.set({
+    qualifiers: [
+      
+      'TRK'
+      
+    ]
+  });
+  window.SS.isUserAdmin = false;
+</script>
+
+
+
+
+
+
+
+<script>
+  window.navbarOptions.set({
+    globalDashboards: [
+      
+      {
+        url: '/dashboard/?did=4',
+        name: 'Home'
+      }
+      
+    ],
+    globalPages: [
+      
+    ],
+    
+    
+    
+  });
+</script>
+
+
+
+<script>
+  var sonarRecentHistory = new Sonar.RecentHistory();
+  
+</script>
+<script>
+  require(['nav/app']);
+</script>
+
+<!--[if lte IE 7 ]>
+<div style="position:fixed;z-index:99999;top:0;bottom:0;left:0;right:0;background:#fff;">
+  <div style="margin-top:150px;text-align:center;line-height:1.4;color:#333;">
+    The web interface cannot be displayed because your browser is not supported.<br>
+    Please switch to a <a target="_blank"
+                          href="http://redirect.sonarsource.com/doc/requirements.html">supported version or another supported browser</a>.
+  </div>
+</div>
+<!--<![endif]-->
+
+
+<script>
+
+
+
+</script>
+
+
+<ul class="processes-container"></ul><div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" id="ui-datepicker-div"></div></body></html>

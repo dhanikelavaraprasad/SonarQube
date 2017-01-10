@@ -1,0 +1,102 @@
+apply plugin: "groovy"
+apply plugin: "idea"
+apply plugin: "eclipse"
+apply plugin: "java"
+
+repositories {
+//    jcenter()
+    mavenCentral()
+
+
+}
+
+// The drivers we want to use
+ext{
+
+    ext {
+        groovyVersion = '2.4.3'
+        gebVersion = '0.10.0'
+        seleniumVersion = '2.53.0'
+    }
+}
+
+idea {
+    project {
+        jdkName = '1.8'
+        languageLevel = '1.8'
+    }
+}
+
+dependencies {
+//    def gebVersion = "0.9.3"
+//    def seleniumVersion = "2.42.2"
+
+//    testCompile("com.domo.api.data:data-client:3.3.0_master.2469"){
+//        exclude group: "com.domo", module: "DomoSAAS-UTL"
+//    }
+    testCompile "log4j:log4j:1.2.17"
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // If using Spock, need to depend on geb-spock
+    testCompile "org.gebish:geb-spock:$gebVersion"
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+
+    testCompile "org.codehaus.groovy.modules.http-builder:http-builder:0.7.1"
+//    testCompile "org.codehaus.groovy.modules.http-builder:http-builder:0.7.2"
+    //testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+
+    // For the libraries required to do Excel parsing
+    testCompile "org.apache.poi:poi-excelant:3.10-FINAL"
+    testCompile 'org.apache.poi:poi:3.12-beta1'
+
+    testCompile 'org.xerial:sqlite-jdbc:3.8.7'
+    testCompile 'mysql:mysql-connector-java:5.1.6'
+
+    //compile 'org.seleniumhq.selenium:selenium-java:2.44.0'
+    testCompile "org.seleniumhq.selenium:selenium-server:${seleniumVersion}"
+
+    // For the libraries required to access MongoDB
+    testCompile "org.mongodb:mongo-java-driver:3.0.2"
+
+    testCompile 'org.assertj:assertj-core:3.0.0'
+
+}
+
+test {
+    System.getProperties().each {
+        //println "Forwarding sysprop ${it.key} ${it.value}"
+        systemProperty it.key, it.value
+    }
+
+}
+
+// Smoke Test Categories
+task smoke(type: Test, description: 'Run smoke tests' ) {
+    useJUnit {
+        includeCategories 'com.domo.test.category.SmokeTest'
+
+        System.getProperties().each {
+            //println "Forwarding sysprop ${it.key} ${it.value}"
+            systemProperty it.key, it.value
+        }
+
+    }
+}
+
+task validationStuxnet(type: Test, description: 'Run Stuxnet Validation tests' ) {
+    useJUnit {
+        includeCategories 'com.domo.test.category.StuxnetValidationTest'
+        System.getProperties().each {
+            systemProperty it.key, it.value
+        }
+    }
+}
+
+task smokeStuxnet(type: Test, description: 'Run Stuxnet Smoke tests' ) {
+    useJUnit {
+        includeCategories 'com.domo.test.category.StuxnetSmokeTest'
+        System.getProperties().each {
+            systemProperty it.key, it.value
+        }
+    }
+}

@@ -1,0 +1,509 @@
+<!DOCTYPE html><!--[if IE 9 ]> <html class="ie9"> <![endif]--><!--[if (gt IE 9)|!(IE)]><!--><html xmlns="http://www.w3.org/1999/xhtml" class="dashboard-page"><!--<![endif]--><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?1424485928" />
+  
+  <title>SonarQube</title>
+
+  <link href="/css/sonar.css?v=5.1.2" rel="stylesheet" media="all" />
+  
+  <script>
+    var pageLang = 'en_US';
+    
+    window.SS = typeof window.SS === 'object' ? window.SS : {};
+    window.SS.hoursInDay = 8;
+    window.SS.user = '';
+    window.SS.userName = '';
+  </script>
+  <script src="/js/sonar.js?v=5.1.2"></script>
+  <script>
+    var baseUrl = '';
+    var $j = jQuery.noConflict();
+    $j(document).ready(function () {$j('.open-modal').modal()});
+    moment.lang(window.pageLang);
+    numeral.language(window.pageLang);
+  </script>
+  <script src="/js/require.js?v=5.1.2"></script>
+  <script>
+    requirejs.config({
+      baseUrl: baseUrl + '/js',
+      urlArgs: 'v=5.1.2'
+    });
+  </script>
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="nav/app" src="/js/nav/app.js?v=5.1.2"></script></head>
+<body>
+
+
+  
+<div class="page-wrapper page-wrapper-global" id="container">
+  <nav class="navbar navbar-global page-container navbar-fade in" id="global-navigation"><div class="container">
+  <div class="navbar-header">
+    <a class="navbar-brand " href="/">
+        <img src="/images/logo.svg" alt="Embrace Quality" title="Embrace Quality" />
+    </a>
+  </div>
+
+  <ul class="nav navbar-nav">
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Dashboards <span class="icon-dropdown"></span>
+      </a>
+      <ul class="dropdown-menu">
+          <li>
+            <a href="/dashboard/?did=4">Home</a>
+          </li>
+      </ul>
+    </li>
+    <li>
+      <a href="/issues/search">Issues</a>
+    </li>
+    <li>
+      <a href="/measures/search?qualifiers[]=TRK">Measures</a>
+    </li>
+    <li>
+      <a href="/coding_rules">Rules</a>
+    </li>
+    <li>
+      <a href="/profiles">Quality Profiles</a>
+    </li>
+    <li>
+      <a href="/quality_gates">Quality Gates</a>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">More <i class="icon-dropdown"></i></a>
+      <ul class="dropdown-menu">
+        <li>
+          <a href="/comparison">Compare Projects</a>
+        </li>
+        <li>
+          <a href="/dependencies">Dependencies</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a class="js-login" href="/sessions/new">Log in</a>
+      </li>
+    <li class="dropdown js-search-dropdown">
+      <a class="dropdown-toggle navbar-search-dropdown js-search-dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-search navbar-icon"></i> <span class="icon-dropdown"></span>
+      </a>
+
+      <div class="js-search-region dropdown-menu dropdown-menu-right"></div>
+    </li>
+    <li>
+      <a class="js-shortcuts" href="#">
+        <i class="icon-help navbar-icon"></i>
+      </a>
+    </li>
+  </ul>
+
+</div>
+</nav>
+
+  
+
+  
+  <div id="body" class="page-container">
+    <div id="content">
+      <div class="error" id="error" style="display:none">
+        <span id="errormsg"></span>   [<a href="#" onclick="javascript:$j('#error').hide();return false;">hide</a>]
+      </div>
+      <div class="notice" id="info" style="display:none">
+        <span id="infomsg"></span>   [<a href="#" onclick="javascript:$j('#info').hide();return false;">hide</a>]
+      </div>
+      <div class="warning" id="warning" style="display:none">
+        <span id="warningmsg"></span>   [<a href="#" onclick="javascript:$j('#warning').hide();return false;">hide</a>]
+      </div>
+      <div class="page" id="dashboard">
+    <header class="page-header">
+  <h1 class="page-title">Home</h1>
+
+
+  <div class="page-actions operations noprint">
+    
+
+    
+  </div>
+</header>
+
+  <div style="width: 100%;display: block; float: none">
+    
+      <!-- the right margin with 1px is a trick for IE. See SONAR-2637 -->
+      <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
+        <div class="dashboard-column" id="dashboard-column-1" style="margin: 0 5px 0 0px;">
+          
+              
+
+
+  <div class="block" id="block_23">
+    
+
+    <div class="welcome" style="height:100%;">
+      
+        <div class="widget">
+          <h3 class="marginbottom5">Welcome to SonarQube Dashboard</h3><p class="marginbottom5">Since you are able to read this, it means that you have successfully started your SonarQube server. Well done!</p><p class="marginbottom5">If you have not removed this text, it also means that you have not yet played much with SonarQube. So here are a few pointers for your next step:</p><ul class="bullet"><li>Do you now want to <a href="http://redirect.sonarsource.com/1">run analysis</a> on a project?</li><li>Maybe start <a href="http://redirect.sonarsource.com/2">customizing dashboards</a>?</li><li>Or simply browse the <a href="http://redirect.sonarsource.com/3">complete documentation</a>?</li><li>If you have a question or an issue, please visit the <a href="http://www.sonarsource.org/get-support/">Get Support</a> page.</li></ul>          <div class="clear"></div>
+        </div>
+      
+
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+
+
+
+
+          
+              
+
+
+
+
+
+          
+        </div>
+      </div>
+    
+      <!-- the right margin with 1px is a trick for IE. See SONAR-2637 -->
+      <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
+        <div class="dashboard-column" id="dashboard-column-2" style="margin: 0 0px 0 5px;">
+          
+              
+
+
+  <div class="block" id="block_25">
+    
+  <div class="widget-title" id="widget_title_25"><a href="/measures/filter/1">Projects</a></div>
+
+
+    <div class="measure_filter_list" style="height:100%;">
+      
+        <div class="widget">
+          
+
+<div id="measure_filter_list25">
+<script>
+  var filterCriteria25 = {"display":"list","qualifiers":"TRK","cols":["metric:alert_status","name","version","metric:ncloc","metric:sqale_index","date"],"pageSize":"20","sort":"name","asc":"true"};
+
+  function refreshList25(sort, asc, page) {
+    $j('#measure_filter_foot25_pages').hide();
+    $j('#measure_filter_foot25_loading').show();
+
+    filterCriteria25['sort']=sort;
+    filterCriteria25['asc']=asc;
+    filterCriteria25['page']=page;
+    var url=baseUrl + '/measures/search/1?widget_id=25&amp;' + $j.param(filterCriteria25);
+
+    
+    $j('#measure_filter_list25').load(url);
+    
+    return false;
+  }
+</script>
+
+
+<table class="data" id="measures-table">
+  <thead>
+  <tr valign="top">
+    
+    
+      <th class="right thin"><a href="#" onclick="refreshList25('metric:alert_status',false, '1'); return false;" title="The project status with regard to its quality gate.">QG</a></th>    
+      <th class=" "><a href="#" onclick="refreshList25('name',false, '1'); return false;" title="Name">Name</a> <i class="icon-sort-asc"></i></th>    
+      <th class="right "><a href="#" onclick="refreshList25('version',false, '1'); return false;" title="Version">Version</a></th>    
+      <th class="right "><a href="#" onclick="refreshList25('metric:ncloc',false, '1'); return false;" title="Non Commenting Lines of Code">LOC</a></th>    
+      <th class="right "><a href="#" onclick="refreshList25('metric:sqale_index',false, '1'); return false;" title="Total effort (in days) to fix all the issues on the component and therefore to comply to all the requirements.">Technical Debt</a></th>    
+      <th class="right "><a href="#" onclick="refreshList25('date',false, '1'); return false;" title="Last Analysis">Last Analysis</a></th>    
+  </tr>
+  </thead>
+  <tbody>
+
+  
+
+  
+
+  
+    <tr class="even">
+      
+      
+        <td class="right ">
+                   </td>
+      
+        <td class=" nowrap">
+          <i class="icon-qualifier-trk"></i> <a href="/dashboard/index/61378" title="DOMOAuto">DOMOAuto</a>        </td>
+      
+        <td class="right nowrap">
+          3.0        </td>
+      
+        <td class="right nowrap">
+          <span id="m_ncloc">478</span> <i class="icon-trend-0"></i>        </td>
+      
+        <td class="right nowrap">
+          <span id="m_sqale_index">2d 1h</span> <i class="icon-trend-0"></i>        </td>
+      
+        <td class="right nowrap">
+          Apr 26 2016        </td>
+      
+    </tr>
+  
+    <tr class="odd">
+      
+      
+        <td class="right ">
+                   </td>
+      
+        <td class=" nowrap">
+          <i class="icon-qualifier-trk"></i> <a href="/dashboard/index/61405" title="DomoAuto">DomoAuto</a>        </td>
+      
+        <td class="right nowrap">
+          3.0        </td>
+      
+        <td class="right nowrap">
+          <span id="m_ncloc">350</span> <i class="icon-trend-0"></i>        </td>
+      
+        <td class="right nowrap">
+          <span id="m_sqale_index">3d 6h</span> <i class="icon-trend-0"></i>        </td>
+      
+        <td class="right nowrap">
+          Apr 28 2016        </td>
+      
+    </tr>
+  
+    <tr class="even">
+      
+      
+        <td class="right ">
+                   </td>
+      
+        <td class=" nowrap">
+          <i class="icon-qualifier-trk"></i> <a href="/dashboard/index/57581" title="DOMOWeb">DOMOWeb</a>        </td>
+      
+        <td class="right nowrap">
+          3.0        </td>
+      
+        <td class="right nowrap">
+          <span id="m_ncloc">248,957</span> <i class="icon-trend--2 icon-black"></i>        </td>
+      
+        <td class="right nowrap">
+          <span id="m_sqale_index">1,072d</span> <i class="icon-trend-2 icon-red"></i>        </td>
+      
+        <td class="right nowrap">
+          May 03 2016        </td>
+      
+    </tr>
+  
+    <tr class="odd">
+      
+      
+        <td class="right ">
+                   </td>
+      
+        <td class=" nowrap">
+          <i class="icon-qualifier-trk"></i> <a href="/dashboard/index/1" title="Wetl">Wetl</a>        </td>
+      
+        <td class="right nowrap">
+          3.0        </td>
+      
+        <td class="right nowrap">
+          <span id="m_ncloc">51,366</span> <i class="icon-trend-2 icon-black"></i>        </td>
+      
+        <td class="right nowrap">
+          <span id="m_sqale_index">164d</span> <i class="icon-trend-2 icon-red"></i>        </td>
+      
+        <td class="right nowrap">
+          Mar 30 2016        </td>
+      
+    </tr>
+  
+
+  
+
+  </tbody>
+  
+    <tfoot id="measure_filter_foot25"><tr><td colspan="6"><img src="/images/loading-small.gif" style="display: none" id="measure_filter_foot25_loading" /><div id="measure_filter_foot25_pages">4 results</div></td></tr></tfoot>  
+</table>
+</div>
+
+          <div class="clear"></div>
+        </div>
+      
+
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+
+
+
+
+          
+              
+
+
+  <div class="block" id="block_26">
+    
+  <div class="widget-title" id="widget_title_26"><a href="/measures/filter/1?display=list">Projects</a></div>
+
+
+    <div class="measure_filter_treemap" style="height:100%;">
+      
+        <div class="widget">
+          
+<div class="treemap-widget" id="treemap-widget26">
+<!--[if lte IE 8 ]> <h3>Your browser is out of date and does not support this widget.</h3> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+
+<!--<![endif]-->
+<div class="sonar-d3"><div class="legend legend-html"><span class="legend-text">Size: <span class="legend-text-main">Lines of code</span></span><span class="legend-text">Color: <span class="legend-text-main">Coverage</span></span></div><div class="treemap-container" style="height: 269.5px;"><div class="treemap-cell treemap-cell-drilldown" title="DOMOWeb&#10;Lines of code: 248,957" style="left: 0px; top: 0px; width: 405px; height: 269.5px; line-height: 269.5px; font-size: 18px; background-color: rgb(119, 119, 119);"><div class="treemap-inner" style="max-width: 405px;">DOMOWeb</div><a class="treemap-link" href="/dashboard/index?id=DOMOWeb" style="font-size: 14px;"><i class="icon-link"></i></a></div><div class="treemap-cell treemap-cell-drilldown" title="Wetl&#10;Lines of code: 51,366" style="left: 405px; top: 0px; width: 85px; height: 265px; line-height: 265px; font-size: 18px; background-color: rgb(119, 119, 119);"><div class="treemap-inner" style="max-width: 85px;">Wetl</div><a class="treemap-link" href="/dashboard/index?id=Wetl" style="font-size: 13.25px;"><i class="icon-link"></i></a></div><div class="treemap-cell treemap-cell-drilldown treemap-cell-small treemap-cell-very-small" title="DOMOAuto&#10;Lines of code: 478" style="left: 405px; top: 265px; width: 47px; height: 4.5px; line-height: 4.5px; font-size: 12.6771px; background-color: rgb(119, 119, 119);"><div class="treemap-inner" style="max-width: 47px;">DOMOAuto</div><a class="treemap-link" href="/dashboard/index?id=DOMOAuto" style="font-size: 12px;"><i class="icon-link"></i></a></div><div class="treemap-cell treemap-cell-drilldown treemap-cell-small treemap-cell-very-small" title="DomoAuto&#10;Lines of code: 350" style="left: 452px; top: 265px; width: 38px; height: 4.5px; line-height: 4.5px; font-size: 12.0208px; background-color: rgb(119, 119, 119);"><div class="treemap-inner" style="max-width: 38px;">DomoAuto</div><a class="treemap-link" href="/dashboard/index?id=DomoAuto" style="font-size: 12px;"><i class="icon-link"></i></a></div></div><div class="max-results-reached-message" style="display: none;">Only the first 30 components are displayed</div><div class="treemap-breadcrumbs" style="display: none;"><span class="treemap-breadcrumbs-item" title="Projects"><i class="icon-chevron-right" style="display: none;"></i><i class=""></i><a><i class="icon-home"></i></a></span></div></div></div>
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script>
+(function () {
+var metrics = [
+'coverage',
+'ncloc'
+],
+query = [
+'filter=1',
+'metrics=' + metrics.join(','),
+'fields=name,longName,qualifier',
+'pageSize=30',
+'page=1',
+'sort=metric:' + metrics[1],
+'asc=false'
+].join('&amp;'),
+widget = new SonarWidgets.Widget();
+widget
+.type('Treemap')
+.source(baseUrl + '/measures/search_filter?' + query)
+.metricsPriority(metrics)
+.options({
+heightInPercents: '55',
+maxItems: 30,
+maxItemsReachedMessage: 'Only the first 30 components are displayed',
+baseUrl: baseUrl + '/dashboard/index',
+noData: 'No data',
+resource: 'Projects'
+})
+.render('#treemap-widget26');
+autoResize(500, function() {
+widget.update('#treemap-widget26');
+});
+})();
+</script>
+<!--<![endif]-->
+
+          <div class="clear"></div>
+        </div>
+      
+
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+
+
+
+
+          
+        </div>
+      </div>
+    
+  </div>
+  <div style="clear: both;"></div>
+</div>
+
+<script>
+  jQuery('html').addClass('dashboard-page');
+  jQuery('[data-toggle="tooltip"]').tooltip({ container: '#body' });
+</script>
+
+    </div>
+  </div>
+</div>
+
+
+  
+  <div id="footer" class="page-footer page-container">
+    
+    <div>SonarQube™ technology is powered by <a href="http://www.sonarsource.com" target="SonarSource SA">SonarSource SA</a></div>
+    <div>
+      Version 5.1.2 -
+      <a href="http://www.gnu.org/licenses/lgpl-3.0.txt" target="lgpl_v3">LGPL v3</a> -
+      <a href="http://www.sonarqube.org" target="sonar">Community</a> -
+      <a href="http://www.sonarqube.org/documentation" target="sonar_doc">Documentation</a> -
+      <a href="http://www.sonarqube.org/support" target="support">Get Support</a> -
+      <a href="http://redirect.sonarsource.com/doc/plugin-library.html" target="plugins">Plugins</a> -
+      <a href="/api_documentation">Web Service API</a>
+      
+    </div>
+    <!--[if lte IE 8 ]><br/><span class="ie-warn">IE 8 is not supported. Some widgets may not be properly displayed. Please switch to a <a target="_blank" href="http://redirect.sonarsource.com/doc/requirements.html">supported version or another supported browser</a>.</span><!--<![endif]-->
+  </div>
+
+
+
+<script>
+  window.navbarOptions = new Backbone.Model();
+
+  window.navbarOptions.set({
+    qualifiers: [
+      
+      'TRK'
+      
+    ]
+  });
+  window.SS.isUserAdmin = false;
+</script>
+
+
+
+
+
+
+
+<script>
+  window.navbarOptions.set({
+    globalDashboards: [
+      
+      {
+        url: '/dashboard/?did=4',
+        name: 'Home'
+      }
+      
+    ],
+    globalPages: [
+      
+    ],
+    
+    
+    
+  });
+</script>
+
+
+
+<script>
+  var sonarRecentHistory = new Sonar.RecentHistory();
+  
+</script>
+<script>
+  require(['nav/app']);
+</script>
+
+<!--[if lte IE 7 ]>
+<div style="position:fixed;z-index:99999;top:0;bottom:0;left:0;right:0;background:#fff;">
+  <div style="margin-top:150px;text-align:center;line-height:1.4;color:#333;">
+    The web interface cannot be displayed because your browser is not supported.<br>
+    Please switch to a <a target="_blank"
+                          href="http://redirect.sonarsource.com/doc/requirements.html">supported version or another supported browser</a>.
+  </div>
+</div>
+<!--<![endif]-->
+
+
+<script>
+
+
+
+</script>
+
+
+<ul class="processes-container"></ul></body></html>
